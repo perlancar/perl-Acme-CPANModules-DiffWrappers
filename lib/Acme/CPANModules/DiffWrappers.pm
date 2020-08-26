@@ -8,10 +8,15 @@ package Acme::CPANModules::DiffWrappers;
 require Acme::CPANModules::CLI::Wrapper::UnixCommand;
 my $srclist = $Acme::CPANModules::CLI::Wrapper::UnixCommand::LIST;
 
+sub _includes {
+    my ($list, $item) = @_;
+    ref $list eq 'ARRAY' ? ((grep {$_ eq $item} @$list) ? 1:0) : ($list eq $item);
+}
+
 our $LIST = {
     summary => "Wrappers for the diff Unix command",
     entries => [
-        grep { $_->{'x.command'} eq 'diff' } @{ $srclist->{entries} }
+        grep { _includes($_->{'x.command'}, 'diff') } @{ $srclist->{entries} }
     ],
 };
 
